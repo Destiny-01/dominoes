@@ -1,11 +1,25 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
 import PlayerProfileCard from "../../../components/PlayerProfileCard";
 
 function RoomPage() {
+  const [privacyToggle, setPrivacyToggle] = useState(true);
+
   const roomPreviewData = {
     roomStatus: "",
     stats: { Point: 3, Player1: 3 }, // should contatin room stat e.g. {player: 2, points: 400}
   };
+
+  const handleTextAreaCick = (e: React.MouseEvent<HTMLTextAreaElement>) => {
+    e.target.select();
+  };
+
+  const handlePrivacyToggleClick = () => {
+    // handle toggle slider functionality
+    setPrivacyToggle((prevState) => !prevState);
+  };
+
   return (
     <div className="text-white">
       <div className="absolute left-0 top-0 h-[35%] w-full ">
@@ -63,7 +77,7 @@ function RoomPage() {
           </h1>
         </div>
 
-        <div className="pt-11 flex gap-3">
+        <div className="pt-11 flex gap-3 items-center">
           <button className="bg-main-orange rounded-2xl py-2 px-6 w-fit h-auto flex gap-3 text-nowrap items-center">
             Add Text{"    "}
             <span>
@@ -79,15 +93,28 @@ function RoomPage() {
             </span>
           </button>
 
-          {/* <label className="flex justify-between items-center p-2 text-xl">
-              Send 🐱 memes to my inbox?
-              <input type="checkbox" className="appearance-none" />
-              <span className="w-4 h-4 flex items-center flex-shrink-0 ml-4 p-1 bg-gray-300 rounded-full after:w-8 after:h-8 after:bg-white after:rounded-full after:shadow-md"></span>
-            </label> */}
+          <div className="p-1 w-fit flex items-center gap-2 ">
+            <div
+              className="w-9 rounded-full hover:bg-white/5 hover:cursor-pointer"
+              onClick={handlePrivacyToggleClick}
+            >
+              <input
+                id="pubicToggle"
+                type="checkbox"
+                checked={privacyToggle}
+                className={`relative w-0 h-0 before:absolute before:-top-[13.5px] before:w-4 before:h-4 before:bg-blue-500 before:rounded-full after:absolute after:w-6 after:h-2.5 after:bg-blue-400/35 after:rounded-full after:-top-[10px] ${
+                  privacyToggle ? "before:left-3" : "before:-left-0.5"
+                }`}
+              />
+            </div>
+            <p className="capitalize font-normal text-gray-200">
+              {privacyToggle ? "private" : "public"}
+            </p>
+          </div>
         </div>
 
         <div className="pt-16 pb-8">
-          <h5 className="text-xl sm:text-2xl font-semibold font-poppins">
+          <h5 className="text-xl sm:text-2xl font-medium font-poppins">
             Players
           </h5>
         </div>
@@ -95,11 +122,61 @@ function RoomPage() {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 md:w-fit pt-12">
           <PlayerProfileCard />
           <PlayerProfileCard />
-          <PlayerProfileCard />
         </div>
 
         <div className="mt-[70px]">
-          <h3 className="font-medium text-xl sm:text-2xl">Invite</h3>
+          <h3 className="font-medium text-xl sm:text-2xl font-poppins">
+            Invite
+          </h3>
+
+          <div className=" rounded-2xl w-full mt-11 p-6 bg-main-blue">
+            <div className="w-full group">
+              <textarea
+                name="inviteUrl"
+                className="bg-transparent outline-none resize-none overflow-hidden w-full h-5 peer"
+                onClick={handleTextAreaCick}
+                readOnly
+              >
+                https://dominoes.playdrift.com/room/Vo3Haw4Dod3
+              </textarea>
+              <div className="relative h-px w-full rounded-full bg-gray-200 group-hover:h-0.5 peer-focus:h-0.5 after:w-full after:h-full after:absolute after:top-0 after:left-0 after:hidden  after:bg-main-orange after:peer-focus:block after:peer-focus:animate-expand" />
+            </div>
+
+            <p className="mt-3 text-base font-[500] text-gray-400">
+              Invite players by sharing this link
+            </p>
+
+            <div className="px-6 py-3 w-full h-9">
+              <div className="flex justify-end gap-2">
+                <div className="uppercase px-1.5 text-blue-700 font-light flex items-center hover:cursor-pointer hover:bg-white/5 rounded-2xl">
+                  <span className="">copy</span>
+
+                  <svg
+                    className="fill-blue-700 ml-2 h-5 "
+                    focusable="false"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    data-testid="ContentCopyIcon"
+                  >
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2m0 16H8V7h11z"></path>
+                  </svg>
+                </div>
+                <div className="uppercase px-1.5 text-blue-700 font-light flex items-center hover:cursor-pointer hover:bg-white/5 rounded-2xl">
+                  <span className="">share</span>
+
+                  <svg
+                    className="fill-blue-700 ml-2 h-5"
+                    focusable="false"
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    data-testid="ShareIcon"
+                  >
+                    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>

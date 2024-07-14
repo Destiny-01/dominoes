@@ -28,6 +28,15 @@ const config: Config = {
         poppins: ["var(--font-poppins)"],
         open_sans: ["var(--font-open-sans)"],
       },
+      keyframes: {
+        expand: {
+          "0%": { transform: "scale(0)" },
+          "100%": { transform: "scale(1)" },
+        },
+      },
+      animation: {
+        expand: "expand 0.4s linear forwards",
+      },
     },
 
     screens: {
